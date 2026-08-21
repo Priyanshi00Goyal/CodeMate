@@ -1,5 +1,5 @@
 import streamlit as st
-from modules.ai_helper import explain_code
+from modules.ai_helper import explain_code, find_bug
 
 st.set_page_config(
     page_title="CodeMate",
@@ -107,8 +107,24 @@ elif page == "🐛 Bug Finder":
     )
 
     if st.button("🔎 Find Bug"):
+
         if code.strip():
-            st.info("Bug analysis will appear here.")
+
+            with st.spinner("🐛 CodeMate is searching for bugs..."):
+    
+                try:
+                    analysis = find_bug(
+                        code,
+                        language,
+                        error
+                    )
+
+                    st.markdown("## 🧠 Bug Analysis")
+                    st.write(analysis)
+
+                except Exception as e:
+                    st.error(f"Something went wrong: {e}")
+
         else:
             st.warning("Please paste your code first.")
 
