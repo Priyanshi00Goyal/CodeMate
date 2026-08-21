@@ -96,6 +96,12 @@ elif page == "🐛 Bug Finder":
 
     st.title("🐛 Bug Finder")
 
+    language = st.selectbox(
+        "Select programming language",
+        ["Python", "C++", "C", "Java", "JavaScript"],
+        key="bug_language"
+    )
+
     code = st.text_area(
         "Paste your code",
         height=250
