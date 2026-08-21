@@ -1,4 +1,5 @@
 import streamlit as st
+from modules.ai_helper import explain_code
 
 st.set_page_config(
     page_title="CodeMate",
@@ -70,10 +71,23 @@ elif page == "🧠 Code Explainer":
     )
 
     if st.button("🔍 Explain Code"):
+
         if code.strip():
-            st.info(
-                f"Code explanation for {language} will appear here."
-            )
+
+            with st.spinner("🧠 CodeMate is analyzing your code..."):
+
+                try:
+                    explanation = explain_code(
+                        code,
+                        language
+                    )
+
+                    st.markdown("## 💡 Explanation")
+                    st.write(explanation)
+
+                except Exception as e:
+                    st.error(f"Something went wrong: {e}")
+
         else:
             st.warning("Please paste some code first.")
 
@@ -85,6 +99,84 @@ elif page == "🐛 Bug Finder":
     code = st.text_area(
         "Paste your code",
         height=250
+    )
+
+    error = st.text_area(
+        "Paste the error message (optional)",
+        height=150
+    )
+
+    if st.button("🔎 Find Bug"):
+        if code.strip():
+            st.info("Bug analysis will appear here.")
+        else:
+            st.warning("Please paste your code first.")
+
+# CODE IMPROVER
+elif page == "✨ Code Improver":
+
+    st.title("✨ Code Improver")
+
+    code = st.text_area(
+        "Paste your code",
+        height=300
+    )
+
+    if st.button("✨ Improve Code"):
+        if code.strip():
+            st.info("Improved code will appear here.")
+        else:
+            st.warning("Please paste your code first.")
+
+# PRACTICE MODE
+elif page == "📚 Practice Mode":
+
+    st.title("📚 Practice Mode")
+
+    topic = st.selectbox(
+        "Choose a topic",
+        [
+            "Arrays",
+            "Strings",
+            "Linked Lists",
+            "Stacks",
+            "Queues",
+            "Trees",
+            "Graphs",
+            "Dynamic Programming"
+        ]
+    )
+
+    difficulty = st.selectbox(
+        "Difficulty",
+        ["Easy", "Medium", "Hard"]
+    )
+
+    if st.button("🎯 Generate Question"):
+        st.info(
+            f"A {difficulty} {topic} question will appear here."
+        )
+
+# PROGRESS
+elif page == "📊 My Progress":
+
+    st.title("📊 My Progress")
+
+    col1, col2, col3 = st.columns(3)
+
+    with col1:
+        st.metric("Problems Solved", 0)
+
+    with col2:
+        st.metric("Concepts Learned", 0)
+
+    with col3:
+        st.metric("Practice Streak", "0 days")
+
+    st.divider()
+
+    st.info(
+        "Your coding progress tracker will be connected here."
     )
 
     error = st.text_area(
