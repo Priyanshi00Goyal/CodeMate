@@ -36,3 +36,45 @@ Keep the explanation clear and easy to understand.
     )
 
     return response.output_text
+
+def find_bug(code, language, error_message):
+
+    client = get_client()
+
+    prompt = f"""
+You are CodeMate, a friendly programming debugging tutor.
+
+Analyze the following {language} code and identify potential bugs.
+
+Code:
+{code}
+
+Error message:
+{error_message if error_message else "No error message provided."}
+
+Give the response in this structure:
+
+1. 🐛 Problem
+Explain what is wrong.
+
+2. 🔍 Why it happens
+Explain the cause in beginner-friendly language.
+
+3. 🔧 How to fix it
+Give a clear solution.
+
+4. ✅ Corrected Code
+Provide the corrected version of the code.
+
+5. 💡 Prevention Tip
+Give one short tip to avoid this type of bug in the future.
+
+Do not invent an error if the code appears correct.
+"""
+
+    response = client.responses.create(
+        model="gpt-5-mini",
+        input=prompt
+    )
+
+    return response.output_text
