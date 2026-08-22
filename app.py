@@ -27,33 +27,131 @@ st.set_page_config(
 
 st.markdown("""
 <style>
+/* ---------- Global ---------- */
+.block-container {
+    padding-top: 2rem;
+    padding-bottom: 3rem;
+    max-width: 1400px;
+}
+
+[data-testid="stSidebar"] {
+    border-right: 1px solid rgba(128,128,128,.18);
+}
+
+[data-testid="stSidebar"] > div:first-child {
+    padding-top: 1.5rem;
+}
 
 .main-title {
-    font-size: 48px;
-    font-weight: 700;
-    margin-bottom: 0;
+    font-size: clamp(42px, 5vw, 64px);
+    font-weight: 800;
+    letter-spacing: -2px;
+    line-height: 1;
+    margin: 0;
 }
 
 .subtitle {
-    font-size: 20px;
-    opacity: 0.75;
-    margin-top: 0;
+    font-size: 21px;
+    opacity: .72;
+    margin: 10px 0 18px;
+}
+
+.hero {
+    padding: 34px 36px;
+    border-radius: 24px;
+    border: 1px solid rgba(128,128,128,.20);
+    background: linear-gradient(
+        135deg,
+        rgba(99,102,241,.12),
+        rgba(59,130,246,.06)
+    );
+    margin-bottom: 28px;
+}
+
+.hero-badge {
+    display: inline-block;
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 700;
+    border: 1px solid rgba(99,102,241,.25);
+    background: rgba(99,102,241,.10);
+    margin-bottom: 14px;
 }
 
 .feature-card {
-    padding: 25px;
-    border-radius: 15px;
-    border: 1px solid rgba(128, 128, 128, 0.25);
-    margin-bottom: 15px;
+    min-height: 165px;
+    padding: 24px;
+    border-radius: 18px;
+    border: 1px solid rgba(128,128,128,.20);
+    background: rgba(128,128,128,.035);
+    margin-bottom: 16px;
+    transition: transform .2s ease, border-color .2s ease;
+}
+
+.feature-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(99,102,241,.45);
 }
 
 .feature-card h3 {
-    margin-bottom: 8px;
+    margin: 0 0 9px;
+    font-size: 20px;
+}
+
+.feature-card p {
+    opacity: .72;
+    line-height: 1.55;
 }
 
 .section-title {
     font-size: 30px;
+    font-weight: 750;
+    margin-top: 10px;
+}
+
+.page-header {
+    padding: 10px 0 8px;
+    margin-bottom: 20px;
+}
+
+.page-header h1 {
+    margin-bottom: 4px;
+}
+
+.page-description {
+    opacity: .70;
+    font-size: 16px;
+}
+
+.tip-card {
+    padding: 18px 20px;
+    border-radius: 16px;
+    border: 1px solid rgba(128,128,128,.18);
+    background: rgba(128,128,128,.035);
+}
+
+.footer {
+    text-align: center;
+    opacity: .55;
+    padding: 35px 0 5px;
+    font-size: 13px;
+}
+
+div.stButton > button {
+    border-radius: 10px;
     font-weight: 650;
+}
+
+textarea {
+    border-radius: 12px !important;
+}
+
+[data-testid="stMetric"] {
+    padding: 12px;
+    border-radius: 14px;
+    border: 1px solid rgba(128,128,128,.16);
+    background: rgba(128,128,128,.025);
 }
 
 </style>
@@ -90,14 +188,20 @@ def extract_metric(text, metric):
 
 # Sidebar
 st.sidebar.markdown(
-    "# 💻 CodeMate"
-)
-
-st.sidebar.caption(
-    "Your AI Coding Companion"
+    """
+    <div style="padding: 8px 0 18px;">
+        <div style="font-size:30px;font-weight:800;">💻 CodeMate</div>
+        <div style="opacity:.65;font-size:14px;margin-top:4px;">
+            Your AI Coding Companion
+        </div>
+    </div>
+    """,
+    unsafe_allow_html=True
 )
 
 st.sidebar.divider()
+
+st.sidebar.caption("LEARNING TOOLS")
 
 page = st.sidebar.radio(
     "Navigate",
@@ -205,12 +309,25 @@ if page == "🏠 Home":
 
     st.divider()
 
+    st.markdown("""
+    <div class="tip-card">
+        <b>💡 CodeMate tip</b><br>
+        Use Analyze Code for a complete overview, then Practice Mode
+        to turn what you learned into a coding challenge.
+    </div>
+    """, unsafe_allow_html=True)
+
+    st.markdown(
+        '<div class="footer">Built with Streamlit + Gemini • CodeMate</div>',
+        unsafe_allow_html=True
+    )
+
     st.success("🚀 CodeMate is ready to help you code!")
 
-#PYTHON CHECKER
+# PYTHON CHECKER
 elif page == "🧪 Python Checker":
 
-    st.title("🧪 Python Code Checker")
+    st.markdown("""<div class="page-header"><h1>🧪 Python Code Checker</h1><div class="page-description">Check your Python code for syntax errors before running it.</div></div>""", unsafe_allow_html=True)
 
     st.write(
         "Check your Python code for syntax errors "
@@ -242,91 +359,115 @@ for number in numbers:
 
         else:
 
+            # Clear previous result
+            st.session_state.pop(
+                "syntax_result",
+                None
+            )
+
+            st.session_state.pop(
+                "error_explanation",
+                None
+            )
+
             result = check_python_syntax(code)
 
-            if result["valid"]:
+            st.session_state.syntax_result = result
+            st.session_state.checked_code = code
 
-                st.success(
-                    "✅ No syntax errors detected!"
-                )
+    # Display stored result
+    if "syntax_result" in st.session_state:
+
+        result = st.session_state.syntax_result
+
+        st.divider()
+
+        if result["valid"]:
+
+            st.success(
+                "✅ No syntax errors detected!"
+            )
+
+            st.markdown(
+                "Your code passed the Python syntax check."
+            )
+
+        else:
+
+            st.error(
+                "❌ Syntax error detected!"
+            )
+
+            st.markdown(
+                f"**Error:** {result['message']}"
+            )
+
+            if result["line"]:
 
                 st.markdown(
-                    "Your code passed the Python syntax check."
+                    f"**Line:** {result['line']}"
                 )
 
-            else:
-
-                st.error(
-                    "❌ Syntax error detected!"
-                )
+            if result["offset"]:
 
                 st.markdown(
-                    f"**Error:** {result['message']}"
+                    f"**Position:** {result['offset']}"
                 )
 
-                if result["line"]:
+            st.info(
+                "CodeMate found a syntax problem. "
+                "Let's understand it."
+            )
 
-                    st.markdown(
-                        f"**Line:** {result['line']}"
-                    )
+            if st.button(
+                "🤖 Explain This Error",
+                type="primary"
+            ):
 
-                if result["offset"]:
-
-                    st.markdown(
-                        f"**Position:** {result['offset']}"
-                    )
-
-                st.info(
-                    "CodeMate found a syntax problem. "
-                    "Let's understand it."
+                error_message = (
+                    f"{result['message']} "
+                    f"(Line {result['line']})"
                 )
 
-                if st.button(
-                    "🤖 Explain This Error",
-                    type="primary"
+                with st.spinner(
+                    "🧠 CodeMate is explaining the error..."
                 ):
 
-                    error_message = (
-                        f"{result['message']} "
-                        f"(Line {result['line']})"
-                    )
+                    try:
 
-                    with st.spinner(
-                    "🧠 CodeMate is explaining the error..."
-                    ):
+                        explanation = explain_error(
+                            st.session_state.checked_code,
+                            "Python",
+                            error_message
+                        )
 
-                        try:
+                        st.session_state.error_explanation = (
+                            explanation
+                        )
 
-                            explanation = explain_error(
-                                code,
-                                "Python",
-                                error_message
-                            )
+                    except Exception as e:
 
-                            st.session_state.error_explanation = explanation
+                        st.error(
+                            f"Could not explain the error: {e}"
+                        )
 
-                        except Exception as e:
+        # Display AI explanation
+        if "error_explanation" in st.session_state:
 
-                            st.error(
-                                f"Could not explain the error: {e}"
-                            )
+            st.divider()
 
-                        if "error_explanation" in st.session_state:
+            st.markdown(
+                "## 🤖 CodeMate's Explanation"
+            )
 
-                            st.divider()
-
-                            st.markdown(
-                                "## 🤖 CodeMate's Explanation"
-                            )
-
-                            st.markdown(
-                                st.session_state.error_explanation
-                            )
+            st.markdown(
+                st.session_state.error_explanation
+            )
 
 #CODE ANALYZER
 elif page == "🔍 Analyze Code":
 
-    st.title("🔍 Analyze Code")
+    st.markdown("""<div class="page-header"><h1>🔍 Analyze Code</h1><div class="page-description">Get a complete AI-powered analysis of your code.</div></div>""", unsafe_allow_html=True)
 
     st.write(
         "Get a complete AI-powered analysis of your code."
@@ -463,7 +604,7 @@ elif page == "🔍 Analyze Code":
 # CODE EXPLAINER
 elif page == "🧠 Code Explainer":
 
-    st.title("🧠 Code Explainer")
+    st.markdown("""<div class="page-header"><h1>🧠 Code Explainer</h1><div class="page-description">Understand unfamiliar code with a clear, level-adjusted explanation.</div></div>""", unsafe_allow_html=True)
 
     language = st.selectbox(
         "Select programming language",
@@ -512,7 +653,7 @@ elif page == "🧠 Code Explainer":
 # BUG FINDER
 elif page == "🐛 Bug Finder":
 
-    st.title("🐛 Bug Finder")
+    st.markdown("""<div class="page-header"><h1>🐛 Bug Finder</h1><div class="page-description">Find bugs, understand their causes, and learn how to fix them.</div></div>""", unsafe_allow_html=True)
 
     language = st.selectbox(
         "Select programming language",
@@ -555,7 +696,7 @@ elif page == "🐛 Bug Finder":
 # CODE IMPROVER
 elif page == "✨ Code Improver":
 
-    st.title("✨ Code Improver")
+    st.markdown("""<div class="page-header"><h1>✨ Code Improver</h1><div class="page-description">Make your code cleaner, clearer, and easier to maintain.</div></div>""", unsafe_allow_html=True)
 
     st.write(
         "Paste your code and CodeMate will suggest a cleaner "
@@ -606,7 +747,7 @@ elif page == "✨ Code Improver":
 # PRACTICE MODE
 elif page == "📚 Practice Mode":
 
-    st.title("📚 Practice Mode")
+    st.markdown("""<div class="page-header"><h1>📚 Practice Mode</h1><div class="page-description">Practice coding problems and get personalized AI feedback.</div></div>""", unsafe_allow_html=True)
 
     st.write(
         "Practice coding problems and get personalized AI feedback."
@@ -768,7 +909,7 @@ elif page == "📚 Practice Mode":
 # PROGRESS
 elif page == "📊 My Progress":
 
-    st.title("📊 My Progress")
+    st.markdown("""<div class="page-header"><h1>📊 My Progress</h1><div class="page-description">Track your practice, scores, strengths, and next steps.</div></div>""", unsafe_allow_html=True)
 
     df = load_progress()
 
@@ -965,7 +1106,7 @@ elif page == "📊 My Progress":
 # CODE REVIEW
 elif page == "⭐ Code Review":
 
-    st.title("⭐ Code Review")
+    st.markdown("""<div class="page-header"><h1>⭐ Code Review</h1><div class="page-description">Get a structured review of readability, efficiency, naming, and best practices.</div></div>""", unsafe_allow_html=True)
 
     language = st.selectbox(
         "Language",
@@ -1094,6 +1235,11 @@ elif page == "⭐ Code Review":
                         f"Review failed: {e}"
                     )
 
+        else:
+
+            st.warning(
+                "Please paste some code."
+            )
         else:
 
             st.warning(
