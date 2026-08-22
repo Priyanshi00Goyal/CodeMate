@@ -1,5 +1,11 @@
 import streamlit as st
-from modules.ai_helper import explain_code, find_bug, improve_code
+from modules.ai_helper import (
+    explain_code,
+    find_bug,
+    improve_code,
+    generate_question,
+    evaluate_answer
+)
 
 st.set_page_config(
     page_title="CodeMate",
@@ -190,6 +196,10 @@ elif page == "📚 Practice Mode":
 
     st.title("📚 Practice Mode")
 
+    st.write(
+        "Practice coding problems and get AI-powered feedback."
+    )
+
     topic = st.selectbox(
         "Choose a topic",
         [
@@ -210,9 +220,72 @@ elif page == "📚 Practice Mode":
     )
 
     if st.button("🎯 Generate Question"):
-        st.info(
-            f"A {difficulty} {topic} question will appear here."
+
+        with st.spinner("🧠 Creating your question..."):
+
+            try:
+
+                question = generate_question(
+                    topic,
+                    difficulty
+                )
+
+                st.session_state.practice_question = question
+                st.session_state.practice_topic = topic
+
+            except Exception as e:
+
+                st.error(
+                    f"Something went wrong: {e}"
+                )
+
+    if "practice_question" in st.session_state:
+
+        st.divider()
+
+        st.markdown("## 📝 Your Challenge")
+
+        st.markdown(
+            st.session_state.practice_question
         )
+
+        answer = st.text_area(
+            "💻 Write your solution here",
+            height=300,
+            placeholder="Write your code..."
+        )
+
+        if st.button("🚀 Submit Answer"):
+
+            if answer.strip():
+
+                with st.spinner(
+                    "🔍 CodeMate is evaluating your solution..."
+                ):
+
+                    try:
+
+                        feedback = evaluate_answer(
+                            st.session_state.practice_question,
+                            answer,
+                            st.session_state.practice_topic
+                        )
+
+                        st.markdown("## 📊 Your Feedback")
+
+                        st.markdown(feedback)
+
+                    except Exception as e:
+
+                        st.error(
+                            f"Something went wrong: {e}"
+                        )
+
+            else:
+
+                st.warning(
+                    "Please write your solution first."
+                )
 
 # PROGRESS
 elif page == "📊 My Progress":
