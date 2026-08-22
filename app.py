@@ -1,5 +1,5 @@
 import streamlit as st
-from modules.ai_helper import explain_code, find_bug
+from modules.ai_helper import explain_code, find_bug, improve_code
 
 st.set_page_config(
     page_title="CodeMate",
@@ -139,94 +139,51 @@ elif page == "✨ Code Improver":
 
     st.title("✨ Code Improver")
 
-    code = st.text_area(
-        "Paste your code",
-        height=300
+    st.write(
+        "Paste your code and CodeMate will suggest a cleaner "
+        "and more maintainable version."
     )
 
-    if st.button("✨ Improve Code"):
-        if code.strip():
-            st.info("Improved code will appear here.")
-        else:
-            st.warning("Please paste your code first.")
-
-# PRACTICE MODE
-elif page == "📚 Practice Mode":
-
-    st.title("📚 Practice Mode")
-
-    topic = st.selectbox(
-        "Choose a topic",
-        [
-            "Arrays",
-            "Strings",
-            "Linked Lists",
-            "Stacks",
-            "Queues",
-            "Trees",
-            "Graphs",
-            "Dynamic Programming"
-        ]
+    language = st.selectbox(
+        "Select programming language",
+        ["Python", "C++", "C", "Java", "JavaScript"],
+        key="improve_language"
     )
-
-    difficulty = st.selectbox(
-        "Difficulty",
-        ["Easy", "Medium", "Hard"]
-    )
-
-    if st.button("🎯 Generate Question"):
-        st.info(
-            f"A {difficulty} {topic} question will appear here."
-        )
-
-# PROGRESS
-elif page == "📊 My Progress":
-
-    st.title("📊 My Progress")
-
-    col1, col2, col3 = st.columns(3)
-
-    with col1:
-        st.metric("Problems Solved", 0)
-
-    with col2:
-        st.metric("Concepts Learned", 0)
-
-    with col3:
-        st.metric("Practice Streak", "0 days")
-
-    st.divider()
-
-    st.info(
-        "Your coding progress tracker will be connected here."
-    )
-
-    error = st.text_area(
-        "Paste the error message (optional)",
-        height=150
-    )
-
-    if st.button("🔎 Find Bug"):
-        if code.strip():
-            st.info("Bug analysis will appear here.")
-        else:
-            st.warning("Please paste your code first.")
-
-# CODE IMPROVER
-elif page == "✨ Code Improver":
-
-    st.title("✨ Code Improver")
 
     code = st.text_area(
         "Paste your code",
-        height=300
+        height=300,
+        placeholder="Paste your code here..."
     )
 
     if st.button("✨ Improve Code"):
+
         if code.strip():
-            st.info("Improved code will appear here.")
+
+            with st.spinner("✨ CodeMate is improving your code..."):
+
+                try:
+
+                    improved = improve_code(
+                        code,
+                        language
+                    )
+
+                    st.markdown("## 🚀 Improved Version")
+
+                    st.markdown(improved)
+
+                except Exception as e:
+
+                    st.error(
+                        f"Something went wrong: {e}"
+                    )
+
         else:
-            st.warning("Please paste your code first.")
+
+            st.warning(
+                "Please paste some code first."
+            )
 
 # PRACTICE MODE
 elif page == "📚 Practice Mode":
