@@ -378,73 +378,294 @@ st.sidebar.markdown("""
 """, unsafe_allow_html=True)
 
 # HOME
+# HOME
 if page == "🏠 Home":
 
+    # ---------- HERO ----------
     st.markdown("""
     <div class="hero">
         <div class="hero-badge">⚡ AI-POWERED LEARNING PLATFORM</div>
-        <div class="main-title">💻 CodeMate</div>
-        <div class="subtitle">Your personal AI programming mentor.</div>
-        <p style="font-size:17px;line-height:1.7;max-width:760px;opacity:.78;">
+
+        <div class="main-title">
+            💻 CodeMate
+        </div>
+
+        <div class="subtitle">
+            Your personal AI programming mentor.
+        </div>
+
+        <p style="
+            font-size:17px;
+            line-height:1.7;
+            max-width:760px;
+            opacity:.78;
+        ">
             Understand code. Find bugs. Improve your solutions.
             Practice smarter and track your progress — all in one place.
         </p>
     </div>
     """, unsafe_allow_html=True)
 
-    # Quick stats / value strip
+    # ---------- QUICK STATS ----------
     s1, s2, s3, s4 = st.columns(4)
 
     with s1:
         st.metric("🤖 AI Tools", "8")
+
     with s2:
         st.metric("💻 Languages", "5+")
+
     with s3:
         st.metric("📚 Learning", "24/7")
+
     with s4:
-        st.metric("🎯 Practice", "AI Feedback")
+        st.metric("🎯 AI Feedback", "Instant")
 
     st.markdown("<br>", unsafe_allow_html=True)
 
+    # ---------- WELCOME ----------
     st.markdown(
-        '<p class="section-title">Everything you need to become a better coder</p>',
+        '<p class="section-title">👋 What would you like to do?</p>',
         unsafe_allow_html=True
     )
 
     st.markdown(
-        '<p class="page-description">Choose a tool from the sidebar and let CodeMate help you learn by doing.</p>',
+        '<p class="page-description">'
+        'Choose a tool and start learning, debugging, or improving your code.'
+        '</p>',
         unsafe_allow_html=True
     )
 
-    # Feature grid
-    features = [
-        ("🧠", "Understand Code", "Break down unfamiliar code into simple, level-based explanations.", "Code Explainer"),
-        ("🐛", "Find Bugs", "Identify problems, understand why they happen, and learn how to fix them.", "Bug Finder"),
-        ("✨", "Improve Code", "Make your solutions cleaner, more readable, maintainable, and efficient.", "Code Improver"),
-        ("🔍", "Analyze Code", "Get a complete review of logic, complexity, quality, issues, and concepts.", "Analyze Code"),
-        ("⭐", "Review Code", "Get structured scores for readability, efficiency, naming, and best practices.", "Code Review"),
-        ("📚", "Practice", "Generate coding challenges and receive personalized feedback on your answer.", "Practice Mode"),
-    ]
+    st.markdown("<br>", unsafe_allow_html=True)
 
-    for row in range(0, len(features), 3):
-        cols = st.columns(3, gap="medium")
-        for col, feature in zip(cols, features[row:row+3]):
-            icon, title, desc, label = feature
-            with col:
-                st.markdown(f"""
-                <div class="feature-card">
-                    <div style="font-size:32px;margin-bottom:10px;">{icon}</div>
-                    <h3>{title}</h3>
-                    <p>{desc}</p>
-                    <div style="font-size:12px;font-weight:700;opacity:.55;margin-top:14px;">
-                        CODEMATE • {label.upper()}
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
+    # =========================================================
+    # ROW 1
+    # =========================================================
+
+    col1, col2, col3 = st.columns(3, gap="medium")
+
+    with col1:
+
+        st.markdown("""
+        <div class="feature-card">
+            <div style="font-size:34px;">🧠</div>
+            <h3>Explain Code</h3>
+            <p>
+                Understand unfamiliar code with a clear,
+                beginner-friendly explanation.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+
+        if st.button(
+            "🧠  Open Code Explainer →",
+            key="home_explain",
+            use_container_width=True
+        ):
+            st.session_state.page = "🧠 Code Explainer"
+            st.rerun()
+
+    with col2:
+
+        st.markdown("""
+        <div class="feature-card">
+            <div style="font-size:34px;">🐛</div>
+            <h3>Find Bugs</h3>
+            <p>
+                Discover bugs, understand why they happen,
+                and learn how to fix them.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+
+        if st.button(
+            "🐛  Open Bug Finder →",
+            key="home_bug",
+            use_container_width=True
+        ):
+            st.session_state.page = "🐛 Bug Finder"
+            st.rerun()
+
+    with col3:
+
+        st.markdown("""
+        <div class="feature-card">
+            <div style="font-size:34px;">✨</div>
+            <h3>Improve Code</h3>
+            <p>
+                Make your code cleaner, more readable,
+                maintainable, and efficient.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+
+        if st.button(
+            "✨  Improve My Code →",
+            key="home_improve",
+            use_container_width=True
+        ):
+            st.session_state.page = "✨ Code Improver"
+            st.rerun()
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # How it works
+    # =========================================================
+    # ROW 2
+    # =========================================================
+
+    col1, col2, col3 = st.columns(3, gap="medium")
+
+    with col1:
+
+        st.markdown("""
+        <div class="feature-card">
+            <div style="font-size:34px;">🔍</div>
+            <h3>Analyze Code</h3>
+            <p>
+                Get a complete analysis of logic,
+                complexity, bugs, quality, and concepts.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+
+        if st.button(
+            "🔍  Analyze My Code →",
+            key="home_analyze",
+            use_container_width=True
+        ):
+            st.session_state.page = "🔍 Analyze Code"
+            st.rerun()
+
+    with col2:
+
+        st.markdown("""
+        <div class="feature-card">
+            <div style="font-size:34px;">⭐</div>
+            <h3>Code Review</h3>
+            <p>
+                Get scores for readability, efficiency,
+                structure, naming, and best practices.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+
+        if st.button(
+            "⭐  Review My Code →",
+            key="home_review",
+            use_container_width=True
+        ):
+            st.session_state.page = "⭐ Code Review"
+            st.rerun()
+
+    with col3:
+
+        st.markdown("""
+        <div class="feature-card">
+            <div style="font-size:34px;">📚</div>
+            <h3>Practice Mode</h3>
+            <p>
+                Generate coding challenges and receive
+                personalized AI feedback.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+
+        if st.button(
+            "📚  Start Practicing →",
+            key="home_practice",
+            use_container_width=True
+        ):
+            st.session_state.page = "📚 Practice Mode"
+            st.rerun()
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    # =========================================================
+    # EXTRA TOOLS
+    # =========================================================
+
+    st.markdown(
+        '<p class="section-title">🛠️ More CodeMate tools</p>',
+        unsafe_allow_html=True
+    )
+
+    st.markdown(
+        '<p class="page-description">'
+        'Quick access to debugging and learning utilities.'
+        '</p>',
+        unsafe_allow_html=True
+    )
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    tool1, tool2, tool3 = st.columns(3, gap="medium")
+
+    with tool1:
+
+        st.markdown("""
+        <div class="tip-card">
+            <div style="font-size:28px;">🧪</div>
+            <h3>Python Checker</h3>
+            <p style="opacity:.7;">
+                Check Python syntax errors before running your program.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+
+        if st.button(
+            "🧪 Check Python →",
+            key="home_python",
+            use_container_width=True
+        ):
+            st.session_state.page = "🧪 Python Checker"
+            st.rerun()
+
+    with tool2:
+
+        st.markdown("""
+        <div class="tip-card">
+            <div style="font-size:28px;">🔧</div>
+            <h3>Explain Error</h3>
+            <p style="opacity:.7;">
+                Understand programming errors in simple language.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+
+        if st.button(
+            "🔧 Explain Error →",
+            key="home_error",
+            use_container_width=True
+        ):
+            st.session_state.page = "🔧 Explain Error"
+            st.rerun()
+
+    with tool3:
+
+        st.markdown("""
+        <div class="tip-card">
+            <div style="font-size:28px;">📊</div>
+            <h3>My Progress</h3>
+            <p style="opacity:.7;">
+                Track your coding practice, scores, and learning insights.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+
+        if st.button(
+            "📊 View Progress →",
+            key="home_progress",
+            use_container_width=True
+        ):
+            st.session_state.page = "📊 My Progress"
+            st.rerun()
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    # =========================================================
+    # HOW IT WORKS
+    # =========================================================
+
     st.markdown(
         '<p class="section-title">🚀 How CodeMate works</p>',
         unsafe_allow_html=True
@@ -453,50 +674,106 @@ if page == "🏠 Home":
     h1, h2, h3 = st.columns(3)
 
     with h1:
+
         st.markdown("""
         <div class="tip-card">
-            <div style="font-size:28px;">01</div>
-            <h3>Paste your code</h3>
-            <p style="opacity:.7;">Share your code, error, or coding answer with CodeMate.</p>
+            <div style="
+                font-size:14px;
+                font-weight:800;
+                opacity:.5;
+            ">
+                STEP 01
+            </div>
+
+            <h3>💻 Paste your code</h3>
+
+            <p style="opacity:.7;">
+                Share your code, error message,
+                or coding answer with CodeMate.
+            </p>
         </div>
         """, unsafe_allow_html=True)
 
     with h2:
+
         st.markdown("""
         <div class="tip-card">
-            <div style="font-size:28px;">02</div>
-            <h3>Choose your goal</h3>
-            <p style="opacity:.7;">Explain, debug, improve, review, analyze, or practice.</p>
+            <div style="
+                font-size:14px;
+                font-weight:800;
+                opacity:.5;
+            ">
+                STEP 02
+            </div>
+
+            <h3>🎯 Choose your goal</h3>
+
+            <p style="opacity:.7;">
+                Explain, debug, improve, review,
+                analyze, or practice.
+            </p>
         </div>
         """, unsafe_allow_html=True)
 
     with h3:
+
         st.markdown("""
         <div class="tip-card">
-            <div style="font-size:28px;">03</div>
-            <h3>Learn & improve</h3>
-            <p style="opacity:.7;">Use the AI feedback to understand the concept and keep practicing.</p>
+            <div style="
+                font-size:14px;
+                font-weight:800;
+                opacity:.5;
+            ">
+                STEP 03
+            </div>
+
+            <h3>🧠 Learn & improve</h3>
+
+            <p style="opacity:.7;">
+                Use AI feedback to understand concepts
+                and become a better programmer.
+            </p>
         </div>
         """, unsafe_allow_html=True)
 
     st.markdown("<br>", unsafe_allow_html=True)
 
-    # Main CTA
+    # =========================================================
+    # CTA
+    # =========================================================
+
     st.markdown("""
-    <div class="hero" style="text-align:center;padding:28px;">
-        <div style="font-size:30px;">🎯 Ready to code smarter?</div>
-        <p style="opacity:.72;margin-bottom:0;">
-            Start with <b>Code Explainer</b> if you're learning,
-            or <b>Analyze Code</b> if you want a complete review.
+    <div class="hero" style="
+        text-align:center;
+        padding:32px;
+        margin-top:10px;
+    ">
+
+        <div style="
+            font-size:30px;
+            font-weight:750;
+        ">
+            🎯 Ready to code smarter?
+        </div>
+
+        <p style="
+            opacity:.72;
+            font-size:16px;
+            margin-bottom:0;
+        ">
+            Start with Code Explainer if you're learning,
+            or Analyze Code if you want a complete review.
         </p>
+
     </div>
     """, unsafe_allow_html=True)
 
     st.markdown(
-        '<div class="footer">💻 CodeMate • Learn. Debug. Improve. Practice.</div>',
+        '<div class="footer">'
+        '💻 CodeMate • Learn. Debug. Improve. Practice.'
+        '</div>',
         unsafe_allow_html=True
     )
-
 # PYTHON CHECKER
 elif page == "🧪 Python Checker":
 
