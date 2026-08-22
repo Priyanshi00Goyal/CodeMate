@@ -19,6 +19,40 @@ st.set_page_config(
     layout="wide"
 )
 
+st.markdown("""
+<style>
+
+.main-title {
+    font-size: 48px;
+    font-weight: 700;
+    margin-bottom: 0;
+}
+
+.subtitle {
+    font-size: 20px;
+    opacity: 0.75;
+    margin-top: 0;
+}
+
+.feature-card {
+    padding: 25px;
+    border-radius: 15px;
+    border: 1px solid rgba(128, 128, 128, 0.25);
+    margin-bottom: 15px;
+}
+
+.feature-card h3 {
+    margin-bottom: 8px;
+}
+
+.section-title {
+    font-size: 30px;
+    font-weight: 650;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
 def extract_score(feedback):
 
     match = re.search(
@@ -34,8 +68,17 @@ def extract_score(feedback):
     return 0
 
 # Sidebar
-st.sidebar.title("💻 CodeMate")
-st.sidebar.caption("Your AI Coding Companion")
+st.sidebar.markdown(
+    "# 💻 CodeMate"
+)
+
+st.sidebar.caption(
+    "Your AI Coding Companion"
+)
+
+st.sidebar.divider()
+
+st.sidebar.markdown("### 🧭 Navigation")
 
 page = st.sidebar.radio(
     "Navigate",
@@ -52,8 +95,15 @@ page = st.sidebar.radio(
 # HOME
 if page == "🏠 Home":
 
-    st.title("💻 CodeMate")
-    st.subheader("Your AI-powered coding companion")
+    st.markdown(
+        '<p class="main-title">💻 CodeMate</p>',
+        unsafe_allow_html=True
+    )
+
+    st.markdown(
+        '<p class="subtitle">Your AI-powered coding companion</p>',
+        unsafe_allow_html=True
+    )
 
     st.write(
         "Understand code, find bugs, improve your solutions, "
@@ -65,16 +115,71 @@ if page == "🏠 Home":
     col1, col2, col3 = st.columns(3)
 
     with col1:
-        st.markdown("### 🧠 Code Explainer")
-        st.write("Understand code line by line.")
+
+        st.markdown("""
+        <div class="feature-card">
+            <h3>🧠 Code Explainer</h3>
+            <p>
+            Understand unfamiliar code with
+            beginner-friendly explanations.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
 
     with col2:
-        st.markdown("### 🐛 Bug Finder")
-        st.write("Find and understand programming errors.")
+
+        st.markdown("""
+        <div class="feature-card">
+            <h3>🐛 Bug Finder</h3>
+            <p>
+            Find programming problems and
+            understand how to fix them.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
 
     with col3:
-        st.markdown("### ✨ Code Improver")
-        st.write("Make your code cleaner and easier to understand.")
+
+        st.markdown("""
+        <div class="feature-card">
+            <h3>✨ Code Improver</h3>
+            <p>
+            Make your code cleaner,
+            clearer and easier to maintain.
+            </p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.divider()
+
+    st.markdown(
+        '<p class="section-title">🚀 What can CodeMate do?</p>',
+        unsafe_allow_html=True
+    )
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+
+        st.markdown("""
+        ### 🧑‍💻 Learn
+
+        - Understand difficult code
+        - Learn programming concepts
+        - Practice DSA problems
+        - Get beginner-friendly explanations
+        """)
+
+    with col2:
+
+        st.markdown("""
+        ### ⚡ Improve
+
+        - Find bugs
+        - Improve code quality
+        - Get AI feedback
+        - Track your coding progress
+        """)
 
     st.divider()
 
