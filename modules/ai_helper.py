@@ -78,3 +78,42 @@ Do not invent an error if the code appears correct.
     )
 
     return response.output_text
+
+def improve_code(code, language):
+
+    client = get_client()
+
+    prompt = f"""
+You are CodeMate, a professional programming mentor.
+
+Improve the following {language} code while preserving its original
+functionality.
+
+Code:
+{code}
+
+Your response must contain:
+
+1. ✨ Improved Code
+Provide the complete improved code in a code block.
+
+2. 🔍 What Was Improved
+Explain the important changes.
+
+3. 🚀 Why It Is Better
+Explain improvements related to readability, structure,
+maintainability, or efficiency.
+
+4. 💡 Tip
+Give one useful programming tip related to this code.
+
+Do not change the intended behavior of the program.
+"""
+
+    response = client.responses.create(
+        model="gpt-5-mini",
+        input=prompt
+    )
+
+    return response.output_text
+    
