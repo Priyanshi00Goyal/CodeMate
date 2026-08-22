@@ -1,4 +1,5 @@
 import streamlit as st
+import re
 from modules.ai_helper import (
     explain_code,
     find_bug,
@@ -7,11 +8,30 @@ from modules.ai_helper import (
     evaluate_answer
 )
 
+from modules.progress_tracker import (
+    load_progress,
+    save_progress
+)
+
 st.set_page_config(
     page_title="CodeMate",
     page_icon="💻",
     layout="wide"
 )
+
+def extract_score(feedback):
+
+    match = re.search(
+        r"SCORE:\s*(\d+)",
+        feedback,
+        re.IGNORECASE
+    )
+
+    if match:
+
+        return int(match.group(1))
+
+    return 0
 
 # Sidebar
 st.sidebar.title("💻 CodeMate")
@@ -271,9 +291,34 @@ elif page == "📚 Practice Mode":
                             st.session_state.practice_topic
                         )
 
+                        score = extract_score(feedback)
+
+                        if "CORRECT" in feedback.upper():
+
+                            result = "Correct"
+
+                        elif "PARTIALLY CORRECT" in feedback.upper():
+
+                            result = "Partially Correct"
+
+                        else:
+
+                            result = "Incorrect"
+
+                        save_progress(
+                            st.session_state.practice_topic,
+                            difficulty,
+                            score,
+                            result
+                        )
+
                         st.markdown("## 📊 Your Feedback")
 
                         st.markdown(feedback)
+
+                        st.success(
+                            f"Your score has been saved: {score}/10"
+                        )
 
                     except Exception as e:
 
@@ -292,19 +337,91 @@ elif page == "📊 My Progress":
 
     st.title("📊 My Progress")
 
-    col1, col2, col3 = st.columns(3)
+    df = load_progress()
 
-    with col1:
-        st.metric("Problems Solved", 0)
+    if df.empty:
 
-    with col2:
-        st.metric("Concepts Learned", 0)
+        st.info(
+            "You haven't completed any practice "
+            "questions yet. Start practicing! 🚀"
+        )
 
-    with col3:
-        st.metric("Practice Streak", "0 days")
+    else:
 
-    st.divider()
+        total_problems = len(df)
 
-    st.info(
-        "Your coding progress tracker will be connected here."
-    )
+        average_score = round(
+            df["score"].mean(),
+            1
+        )
+
+        best_score = df["score"].max()
+
+        topics = df["topic"].nunique()
+
+        col1, col2, col3, col4 = st.columns(4)
+
+        with col1:
+
+            st.metric(
+                "Problems Solved",
+                total_problems
+            )
+
+        with col2:
+
+            st.metric(
+                "Average Score",
+                f"{average_score}/10"
+            )
+
+        with col3:
+
+            st.metric(
+                "Best Score",
+                f"{best_score}/10"
+            )
+
+        with col4:
+
+            st.metric(
+                "Topics Practiced",
+                topics
+            )
+
+        st.divider()
+
+        st.subheader("📈 Score History")
+
+        chart_data = df[
+            ["date", "score"]
+        ].copy()
+
+        chart_data = chart_data.set_index("date")
+
+        st.line_chart(chart_data)
+
+        st.subheader("📚 Topics Practiced")
+
+        topic_counts = (
+            df["topic"]
+            .value_counts()
+        )
+
+        st.bar_chart(topic_counts)
+
+        st.subheader("🎯 Difficulty Distribution")
+
+        difficulty_counts = (
+            df["difficulty"]
+            .value_counts()
+        )
+
+        st.bar_chart(difficulty_counts)
+
+        st.subheader("📝 Practice History")
+
+        st.dataframe(
+            df,
+            use_container_width=True
+        )
