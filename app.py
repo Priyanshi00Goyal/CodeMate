@@ -5,13 +5,19 @@ from modules.ai_helper import (
     find_bug,
     improve_code,
     generate_question,
-    evaluate_answer
+    evaluate_answer,
+    analyze_code,
+    review_code,
+    explain_error
 )
 
 from modules.progress_tracker import (
     load_progress,
-    save_progress
+    save_progress,
+    get_learning_insights
 )
+
+from modules.code_analyzer import check_python_syntax
 
 st.set_page_config(
     page_title="CodeMate",
@@ -67,6 +73,21 @@ def extract_score(feedback):
 
     return 0
 
+def extract_metric(text, metric):
+
+    pattern = rf"{metric}:\s*(\d+)"
+
+    match = re.search(
+        pattern,
+        text,
+        re.IGNORECASE
+    )
+
+    if match:
+        return int(match.group(1))
+
+    return 0
+
 # Sidebar
 st.sidebar.markdown(
     "# 💻 CodeMate"
@@ -78,15 +99,16 @@ st.sidebar.caption(
 
 st.sidebar.divider()
 
-st.sidebar.markdown("### 🧭 Navigation")
-
 page = st.sidebar.radio(
     "Navigate",
     [
         "🏠 Home",
+        "🔍 Analyze Code",
+        "🧪 Python Checker",
         "🧠 Code Explainer",
         "🐛 Bug Finder",
         "✨ Code Improver",
+        "⭐ Code Review",
         "📚 Practice Mode",
         "📊 My Progress"
     ]
@@ -185,6 +207,259 @@ if page == "🏠 Home":
 
     st.success("🚀 CodeMate is ready to help you code!")
 
+#PYTHON CHECKER
+elif page == "🧪 Python Checker":
+
+    st.title("🧪 Python Code Checker")
+
+    st.write(
+        "Check your Python code for syntax errors "
+        "before running it."
+    )
+
+    code = st.text_area(
+        "💻 Paste Python code",
+        height=350,
+        placeholder="""Example:
+
+numbers = [1, 2, 3]
+
+for number in numbers:
+    print(number)
+"""
+    )
+
+    if st.button(
+        "🔎 Check Code",
+        type="primary"
+    ):
+
+        if not code.strip():
+
+            st.warning(
+                "Please enter some Python code."
+            )
+
+        else:
+
+            result = check_python_syntax(code)
+
+            if result["valid"]:
+
+                st.success(
+                    "✅ No syntax errors detected!"
+                )
+
+                st.markdown(
+                    "Your code passed the Python syntax check."
+                )
+
+            else:
+
+                st.error(
+                    "❌ Syntax error detected!"
+                )
+
+                st.markdown(
+                    f"**Error:** {result['message']}"
+                )
+
+                if result["line"]:
+
+                    st.markdown(
+                        f"**Line:** {result['line']}"
+                    )
+
+                if result["offset"]:
+
+                    st.markdown(
+                        f"**Position:** {result['offset']}"
+                    )
+
+                st.info(
+                    "CodeMate found a syntax problem. "
+                    "Let's understand it."
+                )
+
+                if st.button(
+                    "🤖 Explain This Error",
+                    type="primary"
+                ):
+
+                    error_message = (
+                        f"{result['message']} "
+                        f"(Line {result['line']})"
+                    )
+
+                    with st.spinner(
+                    "🧠 CodeMate is explaining the error..."
+                    ):
+
+                        try:
+
+                            explanation = explain_error(
+                                code,
+                                "Python",
+                                error_message
+                            )
+
+                            st.session_state.error_explanation = explanation
+
+                        except Exception as e:
+
+                            st.error(
+                                f"Could not explain the error: {e}"
+                            )
+
+                        if "error_explanation" in st.session_state:
+
+                            st.divider()
+
+                            st.markdown(
+                                "## 🤖 CodeMate's Explanation"
+                            )
+
+                            st.markdown(
+                                st.session_state.error_explanation
+                            )
+
+#CODE ANALYZER
+elif page == "🔍 Analyze Code":
+
+    st.title("🔍 Analyze Code")
+
+    st.write(
+        "Get a complete AI-powered analysis of your code."
+    )
+
+    col1, col2 = st.columns(2)
+
+    with col1:
+
+        language = st.selectbox(
+            "💻 Programming Language",
+            [
+                "Python",
+                "C++",
+                "C",
+                "Java",
+                "JavaScript"
+            ],
+            key="analyze_language"
+        )
+
+    with col2:
+
+        level = st.selectbox(
+            "🎓 Your Level",
+            [
+                "Beginner",
+                "Intermediate",
+                "Advanced"
+            ],
+            key="analyze_level"
+        )
+
+    code = st.text_area(
+        "💻 Paste your code",
+        height=350,
+        placeholder="Paste your code here..."
+    )
+
+    if st.button(
+        "🔍 Analyze Code",
+        type="primary"
+    ):
+
+        if code.strip():
+
+            with st.spinner(
+                "🧠 CodeMate is analyzing your code..."
+            ):
+
+                    analysis = analyze_code(
+                        code,
+                        language,
+                        level
+                    )
+
+                    st.divider()
+
+                    st.markdown(
+                        "## 📊 Code Analysis"
+                    )
+
+                    st.markdown(
+                        analysis
+                    )
+
+                    st.divider()
+
+                    st.markdown("## 🎯 Continue Learning")
+
+                    st.write(
+                        "Want to practice what you just learned?"
+                    )
+
+                    practice_topic = st.selectbox(
+                        "Choose a topic to practice",
+                        [
+                            "Arrays",
+                            "Strings",
+                            "Loops",
+                            "Functions",
+                            "Recursion",
+                            "Linked Lists",
+                            "Stacks",
+                            "Queues",
+                            "Trees",
+                            "Graphs",
+                            "Dynamic Programming",
+                            "Binary Search"
+                        ],
+                        key="analysis_practice_topic"
+                    )
+
+
+                    practice_difficulty = st.selectbox(
+                        "Choose difficulty",
+                        ["Easy", "Medium", "Hard"],
+                        key="analysis_practice_difficulty"
+                    )
+
+                    if st.button("🎯 Practice This Topic"):
+
+                        with st.spinner(
+                            "🧠 Creating a personalized question..."
+                        ):
+
+                            try:
+
+                                question = generate_question(
+                                    practice_topic,
+                                    practice_difficulty
+                                )
+
+                                st.session_state.practice_question = question
+                                st.session_state.practice_topic = practice_topic
+
+                                st.success(
+                                    "Question generated! Go to 📚 Practice Mode to solve it."
+                                )
+
+                            except Exception as e:
+
+                                st.error(
+                                    f"Something went wrong: {e}"
+                                )
+
+
+        else:
+
+            st.warning(
+                "Please paste some code first."
+            )
+
 # CODE EXPLAINER
 elif page == "🧠 Code Explainer":
 
@@ -192,7 +467,18 @@ elif page == "🧠 Code Explainer":
 
     language = st.selectbox(
         "Select programming language",
-        ["Python", "C++", "C", "Java", "JavaScript"]
+        ["Python", "C++", "C", "Java", "JavaScript"],
+        key="explain_language"
+    )
+
+    level = st.select_slider(
+        "🎓 Explanation Level",
+        options=[
+            "Beginner",
+            "Intermediate",
+            "Advanced"
+        ],
+        value="Beginner"
     )
 
     code = st.text_area(
@@ -210,7 +496,8 @@ elif page == "🧠 Code Explainer":
                 try:
                     explanation = explain_code(
                         code,
-                        language
+                        language,
+                        level
                     )
 
                     st.markdown("## 💡 Explanation")
@@ -322,31 +609,55 @@ elif page == "📚 Practice Mode":
     st.title("📚 Practice Mode")
 
     st.write(
-        "Practice coding problems and get AI-powered feedback."
+        "Practice coding problems and get personalized AI feedback."
     )
 
-    topic = st.selectbox(
-        "Choose a topic",
-        [
-            "Arrays",
-            "Strings",
-            "Linked Lists",
-            "Stacks",
-            "Queues",
-            "Trees",
-            "Graphs",
-            "Dynamic Programming"
-        ]
-    )
+    if "practice_topic" in st.session_state:
 
-    difficulty = st.selectbox(
-        "Difficulty",
-        ["Easy", "Medium", "Hard"]
-    )
+        st.info(
+            f"🎯 Current topic: "
+            f"**{st.session_state.practice_topic}**"
+        )
 
-    if st.button("🎯 Generate Question"):
+    col1, col2 = st.columns(2)
 
-        with st.spinner("🧠 Creating your question..."):
+    with col1:
+
+        topic = st.selectbox(
+            "📚 Topic",
+            [
+                "Arrays",
+                "Strings",
+                "Loops",
+                "Functions",
+                "Recursion",
+                "Linked Lists",
+                "Stacks",
+                "Queues",
+                "Trees",
+                "Graphs",
+                "Dynamic Programming",
+                "Binary Search"
+            ],
+            key="practice_topic_select"
+        )
+
+    with col2:
+
+        difficulty = st.selectbox(
+            "🎯 Difficulty",
+            ["Easy", "Medium", "Hard"],
+            key="practice_difficulty"
+        )
+
+    if st.button(
+        "🎯 Generate Question",
+        type="primary"
+    ):
+
+        with st.spinner(
+            "🧠 Creating your coding challenge..."
+        ):
 
             try:
 
@@ -357,11 +668,16 @@ elif page == "📚 Practice Mode":
 
                 st.session_state.practice_question = question
                 st.session_state.practice_topic = topic
+                st.session_state.practice_difficulty = difficulty
+
+                st.success(
+                    "Your challenge is ready! 🚀"
+                )
 
             except Exception as e:
 
                 st.error(
-                    f"Something went wrong: {e}"
+                    f"Could not generate question: {e}"
                 )
 
     if "practice_question" in st.session_state:
@@ -375,14 +691,23 @@ elif page == "📚 Practice Mode":
         )
 
         answer = st.text_area(
-            "💻 Write your solution here",
+            "💻 Your Solution",
             height=300,
-            placeholder="Write your code..."
+            placeholder="Write your solution here..."
         )
 
-        if st.button("🚀 Submit Answer"):
+        if st.button(
+            "🚀 Submit Solution",
+            type="primary"
+        ):
 
-            if answer.strip():
+            if not answer.strip():
+
+                st.warning(
+                    "Please write a solution first."
+                )
+
+            else:
 
                 with st.spinner(
                     "🔍 CodeMate is evaluating your solution..."
@@ -398,13 +723,13 @@ elif page == "📚 Practice Mode":
 
                         score = extract_score(feedback)
 
-                        if "CORRECT" in feedback.upper():
-
-                            result = "Correct"
-
-                        elif "PARTIALLY CORRECT" in feedback.upper():
+                        if "PARTIALLY CORRECT" in feedback.upper():
 
                             result = "Partially Correct"
+
+                        elif "CORRECT" in feedback.upper():
+
+                            result = "Correct"
 
                         else:
 
@@ -412,30 +737,33 @@ elif page == "📚 Practice Mode":
 
                         save_progress(
                             st.session_state.practice_topic,
-                            difficulty,
+                            st.session_state.practice_difficulty,
                             score,
                             result
                         )
 
-                        st.markdown("## 📊 Your Feedback")
+                        st.divider()
+
+                        st.markdown(
+                            "## 📊 CodeMate Feedback"
+                        )
 
                         st.markdown(feedback)
 
+                        st.metric(
+                            "Your Score",
+                            f"{score}/10"
+                        )
+
                         st.success(
-                            f"Your score has been saved: {score}/10"
+                            "✅ Your progress has been saved!"
                         )
 
                     except Exception as e:
 
                         st.error(
-                            f"Something went wrong: {e}"
+                            f"Evaluation failed: {e}"
                         )
-
-            else:
-
-                st.warning(
-                    "Please write your solution first."
-                )
 
 # PROGRESS
 elif page == "📊 My Progress":
@@ -453,6 +781,8 @@ elif page == "📊 My Progress":
 
     else:
 
+        insights = get_learning_insights()
+
         total_problems = len(df)
 
         average_score = round(
@@ -463,6 +793,8 @@ elif page == "📊 My Progress":
         best_score = df["score"].max()
 
         topics = df["topic"].nunique()
+
+        # Metrics
 
         col1, col2, col3, col4 = st.columns(4)
 
@@ -496,37 +828,274 @@ elif page == "📊 My Progress":
 
         st.divider()
 
-        st.subheader("📈 Score History")
+        # Learning Insights
+
+        st.markdown(
+            "## 🧠 Learning Insights"
+        )
+
+        col1, col2 = st.columns(2)
+
+        with col1:
+
+            st.success(
+                f"""
+                🏆 **Strongest Topic**
+
+                {insights["strongest_topic"]}
+
+                Average Score:
+                **{insights["strongest_score"]}/10**
+                """
+            )
+
+        with col2:
+
+            st.warning(
+                f"""
+                ⚠️ **Needs More Practice**
+
+                {insights["weakest_topic"]}
+
+                Average Score:
+                **{insights["weakest_score"]}/10**
+                """
+            )
+
+        st.divider()
+
+        # Recommendation
+
+        st.markdown(
+            "## 🎯 Recommended Next Step"
+        )
+
+        if insights["weakest_score"] < 6:
+
+            st.info(
+                f"""
+                CodeMate recommends focusing on
+                **{insights["weakest_topic"]}**.
+
+                Try 3 Easy problems on this topic
+                before moving to a harder difficulty.
+                """
+            )
+
+        elif insights["weakest_score"] < 8:
+
+            st.info(
+                f"""
+                You're making progress!
+
+                Practice more **{insights["weakest_topic"]}**
+                to strengthen your understanding.
+                """
+            )
+
+        else:
+
+            st.success(
+                "🎉 You're performing consistently well!"
+
+                " Try a new topic or increase the difficulty."
+            )
+
+        st.divider()
+
+        # Score history
+
+        st.markdown(
+            "## 📈 Score History"
+        )
 
         chart_data = df[
             ["date", "score"]
         ].copy()
 
-        chart_data = chart_data.set_index("date")
+        chart_data = chart_data.set_index(
+            "date"
+        )
 
         st.line_chart(chart_data)
 
-        st.subheader("📚 Topics Practiced")
+        # Topic performance
 
-        topic_counts = (
-            df["topic"]
-            .value_counts()
+        st.markdown(
+            "## 📚 Topic Performance"
         )
 
-        st.bar_chart(topic_counts)
+        topic_performance = (
+            df.groupby("topic")["score"]
+            .mean()
+            .round(2)
+            .sort_values(ascending=False)
+        )
 
-        st.subheader("🎯 Difficulty Distribution")
+        st.bar_chart(
+            topic_performance
+        )
+
+        # Difficulty
+
+        st.markdown(
+            "## 🎯 Difficulty Distribution"
+        )
 
         difficulty_counts = (
             df["difficulty"]
             .value_counts()
         )
 
-        st.bar_chart(difficulty_counts)
+        st.bar_chart(
+            difficulty_counts
+        )
 
-        st.subheader("📝 Practice History")
+        # History
+
+        st.markdown(
+            "## 📝 Practice History"
+        )
 
         st.dataframe(
             df,
             use_container_width=True
         )
+
+# CODE REVIEW
+elif page == "⭐ Code Review":
+
+    st.title("⭐ Code Review")
+
+    language = st.selectbox(
+        "Language",
+        [
+            "Python",
+            "C++",
+            "C",
+            "Java",
+            "JavaScript"
+        ],
+        key="review_language"
+    )
+
+    code = st.text_area(
+        "Paste your code",
+        height=350
+    )
+
+    if st.button(
+        "⭐ Review Code",
+        type="primary"
+    ):
+
+        if code.strip():
+
+            with st.spinner(
+                "Reviewing code..."
+            ):
+
+                try:
+
+                    review = review_code(
+                        code,
+                        language
+                    )
+
+                    readability = extract_metric(
+                        review,
+                        "READABILITY"
+                    )
+
+                    efficiency = extract_metric(
+                        review,
+                        "EFFICIENCY"
+                    )
+
+                    structure = extract_metric(
+                        review,
+                        "STRUCTURE"
+                    )
+
+                    naming = extract_metric(
+                        review,
+                        "NAMING"
+                    )
+
+                    error_handling = extract_metric(
+                        review,
+                        "ERROR_HANDLING"
+                    )
+
+                    best_practices = extract_metric(
+                        review,
+                        "BEST_PRACTICES"
+                    )
+
+                    overall = round(
+                        (
+                            readability +
+                            efficiency +
+                            structure +
+                            naming +
+                            error_handling +
+                            best_practices
+                        ) / 6,
+                        1
+                    )
+
+                    st.metric(
+                        "Overall Score",
+                        f"{overall}/10"
+                    )
+
+                    col1, col2, col3 = st.columns(3)
+
+                    with col1:
+                        st.metric(
+                            "Readability",
+                            readability
+                        )
+
+                        st.metric(
+                            "Structure",
+                            structure
+                        )
+
+                    with col2:
+                        st.metric(
+                            "Efficiency",
+                            efficiency
+                        )
+
+                        st.metric(
+                            "Naming",
+                            naming
+                        )
+
+                    with col3:
+                        st.metric(
+                            "Error Handling",
+                            error_handling
+                        )
+
+                        st.metric(
+                            "Best Practices",
+                            best_practices
+                        )
+
+                    st.divider()
+
+                    st.markdown(review)
+
+                except Exception as e:
+
+                    st.error(
+                        f"Review failed: {e}"
+                    )
+
+        else:
+
+            st.warning(
+                "Please paste some code."
+            )
