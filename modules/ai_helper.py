@@ -116,4 +116,76 @@ Do not change the intended behavior of the program.
     )
 
     return response.output_text
-    
+
+def generate_question(topic, difficulty):
+
+    client = get_client()
+
+    prompt = f"""
+You are CodeMate, a coding practice mentor.
+
+Generate ONE programming question.
+
+Topic: {topic}
+Difficulty: {difficulty}
+
+Return the response in this exact structure:
+
+QUESTION:
+<the coding question>
+
+EXAMPLE INPUT:
+<example input>
+
+EXAMPLE OUTPUT:
+<example output>
+
+HINT:
+<a useful but not complete hint>
+
+Do not provide the solution.
+"""
+
+    response = client.responses.create(
+        model="gpt-5-mini",
+        input=prompt
+    )
+
+    return response.output_text
+
+def evaluate_answer(question, answer, topic):
+
+    client = get_client()
+
+    prompt = f"""
+You are CodeMate, a friendly coding mentor.
+
+Evaluate a student's answer to this programming question.
+
+Topic:
+{topic}
+
+Question:
+{question}
+
+Student Answer:
+{answer}
+
+Give:
+
+1. SCORE: Give a score from 0 to 10.
+2. RESULT: Correct, Partially Correct, or Incorrect.
+3. WHAT WAS GOOD: Mention what the student did well.
+4. WHAT TO IMPROVE: Explain mistakes clearly.
+5. BETTER APPROACH: Explain a better approach if needed.
+6. LEARNING TIP: Give one useful tip.
+
+Be encouraging and educational.
+"""
+
+    response = client.responses.create(
+        model="gpt-5-mini",
+        input=prompt
+    )
+
+    return response.output_text
