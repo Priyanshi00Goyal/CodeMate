@@ -221,108 +221,122 @@ page = st.sidebar.radio(
 # HOME
 if page == "🏠 Home":
 
-    st.markdown(
-        '<p class="main-title">💻 CodeMate</p>',
-        unsafe_allow_html=True
-    )
-
-    st.markdown(
-        '<p class="subtitle">Your AI-powered coding companion</p>',
-        unsafe_allow_html=True
-    )
-
-    st.write(
-        "Understand code, find bugs, improve your solutions, "
-        "and practice programming concepts."
-    )
-
-    st.divider()
-
-    col1, col2, col3 = st.columns(3)
-
-    with col1:
-
-        st.markdown("""
-        <div class="feature-card">
-            <h3>🧠 Code Explainer</h3>
-            <p>
-            Understand unfamiliar code with
-            beginner-friendly explanations.
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-
-    with col2:
-
-        st.markdown("""
-        <div class="feature-card">
-            <h3>🐛 Bug Finder</h3>
-            <p>
-            Find programming problems and
-            understand how to fix them.
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-
-    with col3:
-
-        st.markdown("""
-        <div class="feature-card">
-            <h3>✨ Code Improver</h3>
-            <p>
-            Make your code cleaner,
-            clearer and easier to maintain.
-            </p>
-        </div>
-        """, unsafe_allow_html=True)
-
-    st.divider()
-
-    st.markdown(
-        '<p class="section-title">🚀 What can CodeMate do?</p>',
-        unsafe_allow_html=True
-    )
-
-    col1, col2 = st.columns(2)
-
-    with col1:
-
-        st.markdown("""
-        ### 🧑‍💻 Learn
-
-        - Understand difficult code
-        - Learn programming concepts
-        - Practice DSA problems
-        - Get beginner-friendly explanations
-        """)
-
-    with col2:
-
-        st.markdown("""
-        ### ⚡ Improve
-
-        - Find bugs
-        - Improve code quality
-        - Get AI feedback
-        - Track your coding progress
-        """)
-
-    st.divider()
-
     st.markdown("""
-    <div class="tip-card">
-        <b>💡 CodeMate tip</b><br>
-        Use Analyze Code for a complete overview, then Practice Mode
-        to turn what you learned into a coding challenge.
+    <div class="hero">
+        <div class="hero-badge">⚡ AI-POWERED LEARNING PLATFORM</div>
+        <div class="main-title">💻 CodeMate</div>
+        <div class="subtitle">Your personal AI programming mentor.</div>
+        <p style="font-size:17px;line-height:1.7;max-width:760px;opacity:.78;">
+            Understand code. Find bugs. Improve your solutions.
+            Practice smarter and track your progress — all in one place.
+        </p>
+    </div>
+    """, unsafe_allow_html=True)
+
+    # Quick stats / value strip
+    s1, s2, s3, s4 = st.columns(4)
+
+    with s1:
+        st.metric("🤖 AI Tools", "8")
+    with s2:
+        st.metric("💻 Languages", "5+")
+    with s3:
+        st.metric("📚 Learning", "24/7")
+    with s4:
+        st.metric("🎯 Practice", "AI Feedback")
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    st.markdown(
+        '<p class="section-title">Everything you need to become a better coder</p>',
+        unsafe_allow_html=True
+    )
+
+    st.markdown(
+        '<p class="page-description">Choose a tool from the sidebar and let CodeMate help you learn by doing.</p>',
+        unsafe_allow_html=True
+    )
+
+    # Feature grid
+    features = [
+        ("🧠", "Understand Code", "Break down unfamiliar code into simple, level-based explanations.", "Code Explainer"),
+        ("🐛", "Find Bugs", "Identify problems, understand why they happen, and learn how to fix them.", "Bug Finder"),
+        ("✨", "Improve Code", "Make your solutions cleaner, more readable, maintainable, and efficient.", "Code Improver"),
+        ("🔍", "Analyze Code", "Get a complete review of logic, complexity, quality, issues, and concepts.", "Analyze Code"),
+        ("⭐", "Review Code", "Get structured scores for readability, efficiency, naming, and best practices.", "Code Review"),
+        ("📚", "Practice", "Generate coding challenges and receive personalized feedback on your answer.", "Practice Mode"),
+    ]
+
+    for row in range(0, len(features), 3):
+        cols = st.columns(3, gap="medium")
+        for col, feature in zip(cols, features[row:row+3]):
+            icon, title, desc, label = feature
+            with col:
+                st.markdown(f"""
+                <div class="feature-card">
+                    <div style="font-size:32px;margin-bottom:10px;">{icon}</div>
+                    <h3>{title}</h3>
+                    <p>{desc}</p>
+                    <div style="font-size:12px;font-weight:700;opacity:.55;margin-top:14px;">
+                        CODEMATE • {label.upper()}
+                    </div>
+                </div>
+                """, unsafe_allow_html=True)
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    # How it works
+    st.markdown(
+        '<p class="section-title">🚀 How CodeMate works</p>',
+        unsafe_allow_html=True
+    )
+
+    h1, h2, h3 = st.columns(3)
+
+    with h1:
+        st.markdown("""
+        <div class="tip-card">
+            <div style="font-size:28px;">01</div>
+            <h3>Paste your code</h3>
+            <p style="opacity:.7;">Share your code, error, or coding answer with CodeMate.</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with h2:
+        st.markdown("""
+        <div class="tip-card">
+            <div style="font-size:28px;">02</div>
+            <h3>Choose your goal</h3>
+            <p style="opacity:.7;">Explain, debug, improve, review, analyze, or practice.</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    with h3:
+        st.markdown("""
+        <div class="tip-card">
+            <div style="font-size:28px;">03</div>
+            <h3>Learn & improve</h3>
+            <p style="opacity:.7;">Use the AI feedback to understand the concept and keep practicing.</p>
+        </div>
+        """, unsafe_allow_html=True)
+
+    st.markdown("<br>", unsafe_allow_html=True)
+
+    # Main CTA
+    st.markdown("""
+    <div class="hero" style="text-align:center;padding:28px;">
+        <div style="font-size:30px;">🎯 Ready to code smarter?</div>
+        <p style="opacity:.72;margin-bottom:0;">
+            Start with <b>Code Explainer</b> if you're learning,
+            or <b>Analyze Code</b> if you want a complete review.
+        </p>
     </div>
     """, unsafe_allow_html=True)
 
     st.markdown(
-        '<div class="footer">Built with Streamlit + Gemini • CodeMate</div>',
+        '<div class="footer">💻 CodeMate • Learn. Debug. Improve. Practice.</div>',
         unsafe_allow_html=True
     )
-
-    st.success("🚀 CodeMate is ready to help you code!")
 
 # PYTHON CHECKER
 elif page == "🧪 Python Checker":
@@ -1235,11 +1249,6 @@ elif page == "⭐ Code Review":
                         f"Review failed: {e}"
                     )
 
-        else:
-
-            st.warning(
-                "Please paste some code."
-            )
         else:
 
             st.warning(
