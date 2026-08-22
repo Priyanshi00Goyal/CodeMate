@@ -1,3 +1,4 @@
+```
 import streamlit as st
 import re
 from modules.ai_helper import (
@@ -40,6 +41,93 @@ st.markdown("""
 
 [data-testid="stSidebar"] > div:first-child {
     padding-top: 1.5rem;
+}
+
+/* ---------- Premium Sidebar ---------- */
+.sidebar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 4px 2px 12px;
+}
+
+.sidebar-logo {
+    width: 44px;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 13px;
+    font-size: 23px;
+    background: linear-gradient(135deg, rgba(99,102,241,.22), rgba(59,130,246,.16));
+    border: 1px solid rgba(99,102,241,.22);
+}
+
+.sidebar-title {
+    font-size: 23px;
+    font-weight: 800;
+    letter-spacing: -.5px;
+}
+
+.sidebar-subtitle {
+    font-size: 11px;
+    opacity: .58;
+    margin-top: 2px;
+}
+
+.sidebar-status {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 5px 10px;
+    margin: 2px 0 5px 1px;
+    border-radius: 999px;
+    font-size: 11px;
+    border: 1px solid rgba(34,197,94,.22);
+    background: rgba(34,197,94,.07);
+    opacity: .85;
+}
+
+.status-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: #22c55e;
+    display: inline-block;
+}
+
+.nav-label {
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.2px;
+    opacity: .45;
+    margin: 15px 0 7px;
+}
+
+[data-testid="stSidebar"] div.stButton > button {
+    min-height: 42px;
+    border-radius: 11px;
+    border: 1px solid rgba(128,128,128,.13);
+    background: rgba(128,128,128,.035);
+    text-align: left;
+    font-size: 13px;
+    transition: all .18s ease;
+}
+
+[data-testid="stSidebar"] div.stButton > button:hover {
+    border-color: rgba(99,102,241,.40);
+    background: rgba(99,102,241,.09);
+    transform: translateX(2px);
+}
+
+[data-testid="stSidebar"] div.stButton > button[kind="primary"] {
+    background: rgba(99,102,241,.15);
+    border-color: rgba(99,102,241,.35);
+}
+
+.sidebar-footer {
+    padding: 8px 4px 2px;
+    font-size: 13px;
 }
 
 .main-title {
@@ -187,36 +275,107 @@ def extract_metric(text, metric):
     return 0
 
 # Sidebar
-st.sidebar.markdown(
-    """
-    <div style="padding: 8px 0 18px;">
-        <div style="font-size:30px;font-weight:800;">💻 CodeMate</div>
-        <div style="opacity:.65;font-size:14px;margin-top:4px;">
-            Your AI Coding Companion
-        </div>
+st.sidebar.markdown("""
+<div class="sidebar-brand">
+    <div class="sidebar-logo">💻</div>
+    <div>
+        <div class="sidebar-title">CodeMate</div>
+        <div class="sidebar-subtitle">AI Programming Mentor</div>
     </div>
-    """,
-    unsafe_allow_html=True
+</div>
+<div class="sidebar-status">
+    <span class="status-dot"></span>
+    Gemini AI • Online
+</div>
+""", unsafe_allow_html=True)
+
+st.sidebar.markdown("---")
+
+st.sidebar.markdown('<div class="nav-label">HOME</div>', unsafe_allow_html=True)
+home_page = st.sidebar.button(
+    "🏠  Home",
+    use_container_width=True,
+    type="secondary"
 )
 
-st.sidebar.divider()
+st.sidebar.markdown('<div class="nav-label">LEARN</div>', unsafe_allow_html=True)
 
-st.sidebar.caption("LEARNING TOOLS")
+learn_col1, learn_col2 = st.sidebar.columns(2)
+with learn_col1:
+    explain_btn = st.button("🧠\nExplain", use_container_width=True)
+with learn_col2:
+    analyze_btn = st.button("🔍\nAnalyze", use_container_width=True)
 
-page = st.sidebar.radio(
-    "Navigate",
-    [
-        "🏠 Home",
-        "🔍 Analyze Code",
-        "🧪 Python Checker",
-        "🧠 Code Explainer",
-        "🐛 Bug Finder",
-        "✨ Code Improver",
-        "⭐ Code Review",
-        "📚 Practice Mode",
-        "📊 My Progress"
-    ]
+st.sidebar.markdown('<div class="nav-label">DEBUG</div>', unsafe_allow_html=True)
+
+debug_col1, debug_col2 = st.sidebar.columns(2)
+with debug_col1:
+    bug_btn = st.button("🐛\nFind Bug", use_container_width=True)
+with debug_col2:
+    checker_btn = st.button("🧪\nPython", use_container_width=True)
+
+error_btn = st.sidebar.button(
+    "🔧  Explain Error",
+    use_container_width=True
 )
+
+st.sidebar.markdown('<div class="nav-label">IMPROVE</div>', unsafe_allow_html=True)
+
+improve_btn = st.sidebar.button(
+    "✨  Improve Code",
+    use_container_width=True
+)
+
+review_btn = st.sidebar.button(
+    "⭐  Code Review",
+    use_container_width=True
+)
+
+st.sidebar.markdown('<div class="nav-label">PRACTICE</div>', unsafe_allow_html=True)
+
+practice_btn = st.sidebar.button(
+    "📚  Practice Mode",
+    use_container_width=True
+)
+
+progress_btn = st.sidebar.button(
+    "📊  My Progress",
+    use_container_width=True
+)
+
+# Keep navigation state across Streamlit reruns.
+if "page" not in st.session_state:
+    st.session_state.page = "🏠 Home"
+
+button_routes = {
+    "home_page": "🏠 Home",
+    "explain_btn": "🧠 Code Explainer",
+    "analyze_btn": "🔍 Analyze Code",
+    "bug_btn": "🐛 Bug Finder",
+    "checker_btn": "🧪 Python Checker",
+    "error_btn": "🔧 Explain Error",
+    "improve_btn": "✨ Code Improver",
+    "review_btn": "⭐ Code Review",
+    "practice_btn": "📚 Practice Mode",
+    "progress_btn": "📊 My Progress",
+}
+
+for button_name, route in button_routes.items():
+    if locals().get(button_name):
+        st.session_state.page = route
+
+page = st.session_state.page
+
+st.sidebar.markdown("---")
+
+st.sidebar.markdown("""
+<div class="sidebar-footer">
+    <div style="font-weight:700;">⚡ CodeMate</div>
+    <div style="opacity:.58;font-size:12px;margin-top:4px;">
+        Learn • Debug • Improve • Practice
+    </div>
+</div>
+""", unsafe_allow_html=True)
 
 # HOME
 if page == "🏠 Home":
@@ -1254,3 +1413,4 @@ elif page == "⭐ Code Review":
             st.warning(
                 "Please paste some code."
             )
+```
