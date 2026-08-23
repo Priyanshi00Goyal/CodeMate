@@ -1,191 +1,346 @@
-from openai import OpenAI
+from google import genai
 import streamlit as st
 
 
 def get_client():
-    return OpenAI(
-        api_key=st.secrets["OPENAI_API_KEY"]
+    return genai.Client(
+        api_key=st.secrets["GEMINI_API_KEY"]
     )
 
 
-def explain_code(code, language):
+def ask_ai(prompt):
+    client = get_client()
 
+    response = client.models.generate_content(
+        model="gemini-3.6-flash",
+        contents=prompt
+    )
+
+    return response.text
+
+
+def explain_code(code, language, level):
     client = get_client()
 
     prompt = f"""
-You are CodeMate, a friendly programming tutor.
+You are CodeMate, an expert programming tutor.
 
-Explain the following {language} code to a beginner.
+Analyze the following {language} code.
 
-Code:
+User level: {level}
+
+CODE:
 {code}
 
-Give:
-1. What the code does
-2. Step-by-step explanation
-3. Important programming concepts used
-4. Time complexity
-5. Space complexity
+Provide these sections:
 
-Keep the explanation clear and easy to understand.
+## What This Code Does
+Give a short overview.
+
+## Step-by-Step Explanation
+Explain the important parts of the code.
+
+## Concepts Used
+List the programming concepts used.
+
+## Time Complexity
+Explain the time complexity and why.
+
+## Space Complexity
+Explain the space complexity and why.
+
+## Potential Issues
+Mention bugs, edge cases, or questionable practices.
+If there are none, say so.
+
+## Learning Tip
+Give one useful concept the student should learn next.
+
+Adjust the explanation to the selected user level.
+Do not change the code.
+Do not invent problems that do not exist.
 """
 
-    response = client.responses.create(
-        model="gpt-5-mini",
-        input=prompt
-    )
+    return ask_ai(prompt)
 
-    return response.output_text
 
 def find_bug(code, language, error_message):
-
     client = get_client()
 
     prompt = f"""
-You are CodeMate, a friendly programming debugging tutor.
+You are CodeMate, a programming debugging tutor.
 
-Analyze the following {language} code and identify potential bugs.
+Analyze this {language} code.
 
-Code:
+CODE:
 {code}
 
-Error message:
+ERROR MESSAGE:
 {error_message if error_message else "No error message provided."}
 
-Give the response in this structure:
+Provide:
 
-1. 🐛 Problem
+## Problem
 Explain what is wrong.
 
-2. 🔍 Why it happens
-Explain the cause in beginner-friendly language.
+## Why It Happens
+Explain the cause.
 
-3. 🔧 How to fix it
+## How To Fix It
 Give a clear solution.
 
-4. ✅ Corrected Code
-Provide the corrected version of the code.
+## Corrected Code
+Provide corrected code if necessary.
 
-5. 💡 Prevention Tip
-Give one short tip to avoid this type of bug in the future.
+## Prevention Tip
+Give one useful debugging tip.
 
 Do not invent an error if the code appears correct.
 """
 
-    response = client.responses.create(
-        model="gpt-5-mini",
-        input=prompt
-    )
+    return ask_ai(prompt)
 
-    return response.output_text
 
 def improve_code(code, language):
-
     client = get_client()
 
     prompt = f"""
 You are CodeMate, a professional programming mentor.
 
-Improve the following {language} code while preserving its original
-functionality.
+Improve the following {language} code while preserving
+its original functionality.
 
-Code:
+CODE:
 {code}
 
-Your response must contain:
+Provide:
 
-1. ✨ Improved Code
-Provide the complete improved code in a code block.
+## Improved Code
+Provide the complete improved code.
 
-2. 🔍 What Was Improved
+## What Was Improved
 Explain the important changes.
 
-3. 🚀 Why It Is Better
-Explain improvements related to readability, structure,
-maintainability, or efficiency.
+## Why It Is Better
+Explain readability, structure, maintainability,
+and efficiency improvements.
 
-4. 💡 Tip
-Give one useful programming tip related to this code.
+## Tip
+Give one useful programming tip.
 
-Do not change the intended behavior of the program.
+Do not change the intended behavior.
 """
 
-    response = client.responses.create(
-        model="gpt-5-mini",
-        input=prompt
-    )
+    return ask_ai(prompt)
 
     return response.output_text
 
-def generate_question(topic, difficulty):
 
+def generate_question(topic, difficulty):
     client = get_client()
 
     prompt = f"""
 You are CodeMate, a coding practice mentor.
 
-Generate ONE programming question.
+Generate ONE programming problem.
 
-Topic: {topic}
-Difficulty: {difficulty}
+Topic:
+{topic}
 
-Return the response in this exact structure:
+Difficulty:
+{difficulty}
 
-QUESTION:
-<the coding question>
+Return:
 
-EXAMPLE INPUT:
+## Question
+<problem statement>
+
+## Example Input
 <example input>
 
-EXAMPLE OUTPUT:
+## Example Output
 <example output>
 
-HINT:
-<a useful but not complete hint>
+## Hint
+<useful hint>
 
 Do not provide the solution.
 """
 
-    response = client.responses.create(
-        model="gpt-5-mini",
-        input=prompt
-    )
+    return ask_ai(prompt)
 
-    return response.output_text
 
 def evaluate_answer(question, answer, topic):
-
     client = get_client()
 
     prompt = f"""
 You are CodeMate, a friendly coding mentor.
 
-Evaluate a student's answer to this programming question.
+Evaluate this student's answer.
 
-Topic:
+TOPIC:
 {topic}
 
-Question:
+QUESTION:
 {question}
 
-Student Answer:
+STUDENT ANSWER:
 {answer}
 
-Give:
+Provide:
 
-1. SCORE: Give a score from 0 to 10.
-2. RESULT: Correct, Partially Correct, or Incorrect.
-3. WHAT WAS GOOD: Mention what the student did well.
-4. WHAT TO IMPROVE: Explain mistakes clearly.
-5. BETTER APPROACH: Explain a better approach if needed.
-6. LEARNING TIP: Give one useful tip.
+## SCORE
+Give a score from 0 to 10.
+
+## RESULT
+Correct, Partially Correct, or Incorrect.
+
+## WHAT WAS GOOD
+Explain what was done well.
+
+## WHAT TO IMPROVE
+Explain mistakes.
+
+## BETTER APPROACH
+Explain a better approach if needed.
+
+## LEARNING TIP
+Give one useful programming tip.
 
 Be encouraging and educational.
 """
 
-    response = client.responses.create(
-        model="gpt-5-mini",
-        input=prompt
-    )
+    return ask_ai(prompt)
 
-    return response.output_text
+
+def analyze_code(code, language, level):
+    client = get_client()
+
+    prompt = f"""
+You are CodeMate, an expert programming tutor and code reviewer.
+
+Analyze this {language} code.
+
+STUDENT LEVEL:
+{level}
+
+CODE:
+{code}
+
+Return these sections:
+
+## Code Summary
+Explain what the program does.
+
+## Step-by-Step Logic
+Explain the important operations.
+
+## Bugs & Issues
+Identify syntax, runtime, logical errors,
+edge cases, or questionable practices.
+
+If there are no issues, say:
+"No major issues detected."
+
+## Code Quality
+Evaluate:
+- Readability
+- Naming
+- Structure
+- Maintainability
+
+Give a Code Quality Score from 0 to 10.
+
+## Efficiency
+Explain:
+- Time Complexity
+- Space Complexity
+- Possible optimizations
+
+## Concepts Used
+List the programming concepts demonstrated.
+
+## Recommended Practice
+Suggest two concepts the student should practice next.
+
+## Mentor Tip
+Give one practical programming tip.
+
+Do not invent bugs.
+Do not rewrite the code unless necessary.
+Adapt the explanation to the student's level.
+"""
+
+    return ask_ai(prompt)
+
+def review_code(code, language):
+
+    client = get_client()
+
+    prompt = f"""
+You are a senior software engineer.
+
+Review this {language} code.
+
+CODE:
+{code}
+
+Return ONLY this format:
+
+READABILITY: X/10
+EFFICIENCY: X/10
+STRUCTURE: X/10
+NAMING: X/10
+ERROR_HANDLING: X/10
+BEST_PRACTICES: X/10
+
+SUMMARY:
+Short review.
+
+IMPROVEMENTS:
+Bullet points of improvements.
+
+Use realistic scores.
+"""
+    
+    return ask_ai(prompt)
+
+def explain_error(code, language, error_message):
+
+    client = get_client()
+
+    prompt = f"""
+You are CodeMate, an expert programming debugger.
+
+A student received an error while working with
+{language}.
+
+CODE:
+{code}
+
+ERROR:
+{error_message}
+
+Explain the problem in beginner-friendly language.
+
+Return exactly these sections:
+
+## 🐛 What Went Wrong
+Explain the error.
+
+## 🔍 Why It Happened
+Explain the underlying cause.
+
+## 🔧 How To Fix It
+Give clear steps.
+
+## ✅ Corrected Code
+Show the corrected code.
+
+## 💡 Remember
+Give one short tip to prevent this error.
+
+Do not invent additional errors.
+"""
+
+    return ask_ai(prompt)
