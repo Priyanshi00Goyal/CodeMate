@@ -308,88 +308,114 @@ CodeMate can identify:
 
 # 📸 Screenshots & Feature Demos
 
-The following demos show the main AI-powered features of CodeMate.
+Get a quick look at the CodeMate interface and its AI-powered programming tools.
 
-> 🎥 The current files are MP4 recordings, so they are provided as clickable demo links.
-> For directly displayed images in GitHub, replace them with `.png` screenshots.
+---
+
+## 🏠 CodeMate Home
+
+<div align="center">
+
+<img src="screenshots/home.png" alt="CodeMate Home" width="90%">
+
+<br><br>
+
+**🚀 CodeMate — AI-Powered Programming Mentor**
+
+</div>
+
+---
 
 ## 🧠 Explain Code
 
-<a href="screenshots/explain.png.mp4">
+<div align="center">
 
-**▶️ Open Explain Code Demo**
+### ▶️ [Open Explain Code Demo](screenshots/explain.png.mp4)
 
-</a>
+</div>
 
-Demonstrates CodeMate's AI-powered code explanation feature.
+See how CodeMate breaks down code into understandable, step-by-step explanations.
+
+**Key capabilities:**
+
+* 📖 Code explanation
+* 🧩 Concept identification
+* ⚡ Complexity analysis
+* 💡 Learning guidance
 
 ---
 
 ## 🐛 Bug Finder
 
-<a href="screenshots/bugfind.png.mp4">
+<div align="center">
 
-**▶️ Open Bug Finder Demo**
+### ▶️ [Open Bug Finder Demo](screenshots/bugfind.png.mp4)
 
-</a>
+</div>
 
-Demonstrates how CodeMate identifies and explains potential bugs.
+See how CodeMate identifies potential programming bugs and explains why they occur.
+
+**Key capabilities:**
+
+* 🐛 Bug detection
+* 🔍 Problem explanation
+* 🔧 Fix suggestions
+* 💡 Debugging guidance
 
 ---
 
 ## 🔍 Code Analysis
 
-<a href="screenshots/analysis.png.mp4">
+<div align="center">
 
-**▶️ Open Code Analysis Demo**
+### ▶️ [Open Code Analysis Demo](screenshots/analysis.png.mp4)
 
-</a>
+</div>
 
-Demonstrates complete code analysis including logic, complexity, issues, and recommendations.
+See how CodeMate performs a deeper analysis of the submitted code.
+
+**Analysis includes:**
+
+* 🧩 Program logic
+* 🐛 Potential issues
+* 📖 Code quality
+* ⚡ Time complexity
+* 💾 Space complexity
+* 🎯 Learning recommendations
 
 ---
 
 ## ✨ Code Improver
 
-<a href="screenshots/improve.png.mp4">
+<div align="center">
 
-**▶️ Open Code Improver Demo**
+### ▶️ [Open Code Improver Demo](screenshots/improve.png.mp4)
 
-</a>
+</div>
 
-Demonstrates how CodeMate suggests cleaner and more maintainable code.
+See how CodeMate suggests cleaner, more readable, maintainable, and efficient code.
+
+**Improvement areas:**
+
+* 📖 Readability
+* 🏗️ Structure
+* ⚡ Efficiency
+* 🏷️ Naming
+* ✅ Best practices
 
 ---
 
-# 🖼️ Recommended Screenshot Layout
+## 🎥 Feature Demo Overview
 
-For the best GitHub presentation, keep the screenshots inside:
+| Feature          | Demo                                         |
+| ---------------- | -------------------------------------------- |
+| 🏠 Home          | `home.png`                                   |
+| 🧠 Explain Code  | [▶️ View Demo](screenshots/explain.png.mp4)  |
+| 🐛 Bug Finder    | [▶️ View Demo](screenshots/bugfind.png.mp4)  |
+| 🔍 Code Analysis | [▶️ View Demo](screenshots/analysis.png.mp4) |
+| ✨ Code Improver  | [▶️ View Demo](screenshots/improve.png.mp4)  |
 
-```text
-CodeMate/
-│
-└── screenshots/
-    ├── explain.png
-    ├── bugfind.png
-    ├── analysis.png
-    └── improve.png
-```
-
-Then they can be displayed directly like this:
-
-```markdown
-<p align="center">
-  <img src="screenshots/explain.png" width="48%">
-  <img src="screenshots/bugfind.png" width="48%">
-</p>
-
-<p align="center">
-  <img src="screenshots/analysis.png" width="48%">
-  <img src="screenshots/improve.png" width="48%">
-</p>
-```
-
-This will give your repository a much more polished **portfolio-project appearance**.
+> 💡 **Note:** The feature demonstrations are MP4 recordings and are provided as clickable links. The Home interface is displayed directly using `home.png`.
 
 ---
 
@@ -432,13 +458,9 @@ This will give your repository a much more polished **portfolio-project appearan
        │ Gemini API   │
        │ AI Analysis  │
        └──────────────┘
+
 ```
 
----
-
-# 📁 Project Structure
-
-```text
 CodeMate/
 │
 ├── 📄 app.py
@@ -455,13 +477,12 @@ CodeMate/
 │   └── 📄 progress.csv
 │
 └── 📁 screenshots/
+    ├── 🏠 home.png
     ├── 🎥 analysis.png.mp4
     ├── 🎥 bugfind.png.mp4
     ├── 🎥 explain.png.mp4
     └── 🎥 improve.png.mp4
 ```
-
----
 
 # ⚙️ Installation
 
