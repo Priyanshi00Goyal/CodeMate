@@ -57,3 +57,48 @@ def save_progress(
     )
 
     return df
+
+
+def get_learning_insights():
+
+    df = load_progress()
+
+    if df.empty:
+
+        return None
+
+    df["score"] = pd.to_numeric(
+        df["score"],
+        errors="coerce"
+    )
+
+    topic_scores = (
+        df.groupby("topic")["score"]
+        .mean()
+        .sort_values(ascending=False)
+    )
+
+    strongest_topic = topic_scores.index[0]
+    strongest_score = round(
+        topic_scores.iloc[0],
+        1
+    )
+
+    weakest_topic = topic_scores.index[-1]
+    weakest_score = round(
+        topic_scores.iloc[-1],
+        1
+    )
+
+    average_score = round(
+        df["score"].mean(),
+        1
+    )
+
+    return {
+        "strongest_topic": strongest_topic,
+        "strongest_score": strongest_score,
+        "weakest_topic": weakest_topic,
+        "weakest_score": weakest_score,
+        "average_score": average_score
+    }
