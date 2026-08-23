@@ -316,7 +316,7 @@ Get a quick look at the CodeMate interface and its AI-powered programming tools.
 
 <div align="center">
 
-<img src="screenshots/home.png" alt="CodeMate Home" width="90%">
+<img src="screenshots/home.png.png" alt="CodeMate Home" width="90%">
 
 <br><br>
 
