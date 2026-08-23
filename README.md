@@ -1,147 +1,251 @@
+<div align="center">
+
 # 💻 CodeMate
 
-### Your Personal AI Programming Mentor 🚀
+### Your AI-Powered Programming Mentor
 
-CodeMate is an AI-powered programming learning platform that helps students **understand code, find bugs, improve solutions, practice programming, and track their learning progress** — all in one place.
+**Understand • Debug • Improve • Practice**
 
-🔗 **Live Demo:** :contentReference[oaicite:0]{index=0}
+<br>
+
+[![Live App](https://img.shields.io/badge/🚀_Live_App-CodeMate-6C63FF?style=for-the-badge)](https://codemate-34bpt8avhuvv7odcdqpd3k.streamlit.app/)
+[![Python](https://img.shields.io/badge/Python-3.10%2B-blue?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
+[![Streamlit](https://img.shields.io/badge/Streamlit-App-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://streamlit.io/)
+[![Google Gemini](https://img.shields.io/badge/Google-Gemini-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://ai.google.dev/)
+
+<br>
+
+[🚀 Live Demo](https://codemate-34bpt8avhuvv7odcdqpd3k.streamlit.app/)
+&nbsp; • &nbsp;
+[✨ Features](#-features)
+&nbsp; • &nbsp;
+[🛠️ Tech Stack](#️-tech-stack)
+&nbsp; • &nbsp;
+[⚙️ Installation](#️-installation)
+&nbsp; • &nbsp;
+[👩‍💻 Author](#-author)
+
+</div>
 
 ---
 
-## ✨ Features
+## 📌 About CodeMate
 
-### 🧠 Code Explainer
-Understand unfamiliar code with clear, beginner-friendly explanations.
+**CodeMate** is an AI-powered programming learning platform designed to help students and developers learn programming more effectively.
 
-- Step-by-step code explanations
+Instead of simply providing answers, CodeMate focuses on helping users **understand their code, identify mistakes, improve their solutions, and learn through personalized feedback**.
+
+The platform combines multiple AI-powered tools into one learning environment.
+
+> 💡 **Learn by understanding your code — not just copying solutions.**
+
+### 🌐 Live Application
+
+<div align="center">
+
+### [🚀 Try CodeMate Live →](https://codemate-34bpt8avhuvv7odcdqpd3k.streamlit.app/)
+
+</div>
+
+---
+
+# ✨ Features
+
+## 🧠 AI Code Explainer
+
+Understand unfamiliar code with explanations adapted to your experience level.
+
+**CodeMate provides:**
+
+- Step-by-step explanations
 - Programming concepts used
-- Time and space complexity analysis
+- Time complexity analysis
+- Space complexity analysis
 - Potential issues and edge cases
-- Learning recommendations based on your level
+- Personalized learning tips
 
 ---
 
-### 🐛 Bug Finder
-Find and understand problems in your code.
+## 🐛 AI Bug Finder
 
-- Detect potential bugs
-- Explain why they happen
-- Suggest fixes
-- Provide corrected code when necessary
-- Helpful debugging tips
+Debug your code with AI assistance.
 
----
-
-### ✨ Code Improver
-Make your code cleaner and more maintainable.
-
-- Improve readability
-- Improve code structure
-- Suggest better programming practices
-- Maintain original functionality
-- Provide explanations for improvements
+- Identify potential bugs
+- Understand why issues occur
+- Get suggestions for fixing them
+- View corrected code when necessary
+- Learn debugging techniques
 
 ---
 
-### 🔍 Code Analyzer
-Get a complete AI-powered analysis of your code.
+## 🔍 Complete Code Analysis
 
-- Code summary
-- Step-by-step logic
-- Bug and issue detection
-- Code quality evaluation
-- Time and space complexity
-- Programming concepts used
-- Recommended topics to practice next
+Get a deeper understanding of your program.
 
----
+CodeMate analyzes:
 
-### ⭐ Code Review
-Receive structured feedback like a professional code review.
-
-CodeMate evaluates:
-
-- 📖 Readability
-- ⚡ Efficiency
-- 🏗️ Structure
-- 🏷️ Naming
-- 🛡️ Error Handling
-- ✅ Best Practices
+- 🧩 Program logic
+- 🐛 Bugs and potential issues
+- 📖 Code quality
+- ⚡ Time complexity
+- 💾 Space complexity
+- 🧠 Programming concepts
+- 🎯 Recommended topics to practice
 
 ---
 
-### 🧪 Python Code Checker
-Quickly check Python code for syntax errors before running it.
+## ✨ Code Improver
+
+Improve the quality of your existing code while preserving its intended functionality.
+
+Suggestions focus on:
+
+- Readability
+- Maintainability
+- Structure
+- Efficiency
+- Programming best practices
+
+---
+
+## ⭐ Professional Code Review
+
+Receive structured feedback similar to a professional code review.
+
+| Category | Evaluation |
+|---|---|
+| 📖 Readability | Code clarity and understandability |
+| ⚡ Efficiency | Performance and optimization |
+| 🏗️ Structure | Organization and design |
+| 🏷️ Naming | Variable and function naming |
+| 🛡️ Error Handling | Handling unexpected situations |
+| ✅ Best Practices | Programming standards |
+
+Each review includes an **overall score out of 10**.
+
+---
+
+## 🧪 Python Syntax Checker
+
+Check Python code before running it.
 
 - Detect syntax errors
-- Show error line and position
+- Identify error location
+- Display line information
 - Explain errors using AI
-- Beginner-friendly explanations
+- Receive beginner-friendly guidance
 
 ---
 
-### 🔧 Explain Error
-Understand confusing programming errors in simple language.
+## 🔧 Error Explainer
 
-- What went wrong
-- Why it happened
-- How to fix it
-- Corrected code
-- Prevention tips
+Programming errors can be confusing—especially for beginners.
 
----
+CodeMate explains:
 
-### 📚 Practice Mode
-Practice programming with AI-generated coding challenges.
-
-- Choose a topic
-- Select difficulty
-- Generate programming questions
-- Submit your solution
-- Receive personalized AI feedback
-- Get a score out of 10
+1. 🐛 What went wrong
+2. 🔍 Why it happened
+3. 🔧 How to fix it
+4. ✅ Corrected code
+5. 💡 How to avoid similar errors
 
 ---
 
-### 📊 Progress Tracking
-Track your programming journey over time.
+## 📚 AI Practice Mode
 
-- Problems solved
-- Average score
-- Best score
-- Topics practiced
-- Strongest topic
-- Areas needing improvement
-- Score history
-- Topic performance
-- Difficulty distribution
+Practice programming with dynamically generated coding challenges.
+
+### Choose:
+
+📌 **Topic**
+
+- Arrays
+- Strings
+- Loops
+- Functions
+- Recursion
+- Linked Lists
+- Stacks
+- Queues
+- Trees
+- Graphs
+- Dynamic Programming
+- Binary Search
+
+🎯 **Difficulty**
+
+- Easy
+- Medium
+- Hard
+
+Then:
+
+1. Generate a coding challenge
+2. Write your solution
+3. Submit your answer
+4. Receive AI feedback
+5. Get a score out of **10**
+6. Save your learning progress
 
 ---
 
-## 🛠️ Tech Stack
+## 📊 Learning Progress Dashboard
 
-- **Frontend & UI:** Streamlit
-- **AI:** Google Gemini API
-- **Programming Language:** Python
-- **Data Handling:** Pandas
-- **Deployment:** Streamlit Community Cloud
+Track your improvement over time.
+
+### Metrics
+
+- 📝 Problems solved
+- 📈 Average score
+- 🏆 Best score
+- 📚 Topics practiced
+
+### AI Learning Insights
+
+CodeMate identifies:
+
+- 🏆 Your strongest topic
+- ⚠️ Topics needing more practice
+- 🎯 Recommended next steps
+
+### Visual Analytics
+
+- 📈 Score history
+- 📊 Topic performance
+- 🎯 Difficulty distribution
 
 ---
 
-## 📁 Project Structure
+# 🛠️ Tech Stack
+
+<div align="center">
+
+| Technology | Purpose |
+|---|---|
+| 🐍 [Python](https://www.python.org/) | Core programming language |
+| 🎈 [Streamlit](https://streamlit.io/) | Web application framework |
+| ✨ [Google Gemini API](https://ai.google.dev/) | AI-powered code analysis |
+| 🐼 [Pandas](https://pandas.pydata.org/) | Progress data management |
+| ☁️ [Streamlit Community Cloud](https://streamlit.io/cloud) | Deployment |
+
+</div>
+
+---
+
+# 📁 Project Structure
 
 ```text
 CodeMate/
 │
-├── app.py
-├── requirements.txt
-├── README.md
-├── .gitignore
+├── 📄 app.py
+├── 📄 requirements.txt
+├── 📄 README.md
+├── 📄 .gitignore
 │
-├── modules/
-│   ├── ai_helper.py
-│   ├── code_analyzer.py
-│   └── progress_tracker.py
+├── 📁 modules/
+│   ├── 🤖 ai_helper.py
+│   ├── 🧪 code_analyzer.py
+│   └── 📊 progress_tracker.py
 │
-└── data/
-    └── progress.csv
+└── 📁 data/
+    └── 📄 progress.csv
